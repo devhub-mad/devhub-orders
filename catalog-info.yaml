@@ -1,0 +1,14 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: devhub-orders
+  annotations:
+    tektonci/build-namespace: devhub2
+    backstage.io/kubernetes-id: devhub-orders
+    backstage.io/techdocs-ref: dir:.
+    github.com/project-slug: devhub-mad/devhub-orders
+spec:
+  type: api
+  system: system:default/workshop-system-devhub2
+  lifecycle: production
+  owner: user:default/varodrig

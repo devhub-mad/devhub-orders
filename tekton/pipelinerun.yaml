@@ -1,0 +1,31 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: devhub-orders-pipeline-run-init
+  namespace: devhub2
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+  labels:
+    tekton.dev/pipeline: devhub-orders-pipeline
+    type: pipeline
+spec:
+  params:
+    - name: source-repo
+      value: 'https://github.com/devhub-mad/devhub-orders.git'
+    - name: source-branch
+      value: main
+    - name: output-image
+      value: image-registry.openshift-image-registry.svc:5000/image-registry.openshift-image-registry.svc:5000/devhub/app-mod-orders/devhub-orders
+  pipelineRef:
+    name: devhub-orders-pipeline
+  serviceAccountName: pipeline
+  workspaces:
+    - name: source-folder
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi
